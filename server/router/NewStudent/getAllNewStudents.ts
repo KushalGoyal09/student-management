@@ -35,6 +35,9 @@ const getAllNewStudents = async (req: AuthRequest, res: Response) => {
             dropperStatus: true,
             previousScore: true,
         },
+        orderBy: {
+            createdAt: "desc",
+        }
     });
     return res.status(200).json({
         success: true,

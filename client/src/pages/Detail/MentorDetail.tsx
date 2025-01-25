@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Star, Phone, MessageCircle } from "lucide-react";
@@ -73,7 +73,7 @@ export default function Component() {
     const [callStatuses, setCallStatuses] = useState<Map<string, CallStatus>>(
         new Map<string, CallStatus>(),
     );
-
+    const router = useNavigate();
     useEffect(() => {
         if (!username) return;
         fetchMentorDetails(username).then((data) => {
@@ -193,6 +193,9 @@ export default function Component() {
                             <div
                                 key={student.id}
                                 className="bg-gray-50 p-4 rounded-lg"
+                                onClick={() => {
+                                    router(`/profile/${student.id}`);
+                                }}
                             >
                                 <h3 className="font-semibold mb-2">
                                     {student.name}

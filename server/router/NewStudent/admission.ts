@@ -14,7 +14,7 @@ const bodySchema = z.object({
     fatherNumber: z.coerce.string(),
     language: z.coerce.string(),
     target: z.coerce.string(),
-    StudyHours: z.string(),
+    StudyHours: z.coerce.string(),
     class: z.coerce.string(),
     dropperStatus: z.coerce.string(),
     previousScore: z.coerce.string(),
@@ -34,10 +34,15 @@ const admissionForm = async (req: Request, res: Response) => {
     if (!parsedData.success) {
         return res.status(400).json({ error: parsedData.error });
     }
-    await db.student.create({
-        data: parsedData.data,
-    });
-    return res.status(200).json({ message: "Student added successfully" });
+    try {
+        await db.student.create({
+            data: parsedData.data,
+        });
+        return res.status(200).json({ message: "Student added successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: error });
+    }
 };
 
 export default admissionForm;

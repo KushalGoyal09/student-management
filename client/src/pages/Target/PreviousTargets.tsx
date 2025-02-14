@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 import syllabusAtom from "@/recoil/syllabus";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type TargetType = "Regular" | "Revision" | "Extra";
 
@@ -46,7 +47,7 @@ const getTargets = async (
     startDate: Date,
 ): Promise<Target[]> => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/target/get",
+        `${backendUrl}/target/get`,
         {
             studentId,
             fromDate: format(

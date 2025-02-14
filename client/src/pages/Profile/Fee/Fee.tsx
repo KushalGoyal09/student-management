@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FeeStructureForm } from "./FeeStructureForm";
 import { PaymentList } from "./PayemntList";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type StudentFeeManagementProps = {
     studentId: string;
@@ -37,7 +38,7 @@ type FeeDataResponse = {
 
 const fetchFeeData = async (studentId: string) => {
     const { data } = await axios.post<FeeDataResponse>(
-        "https://thepcbpoint.com/api/new/fee-data",
+        `${backendUrl}/new/fee-data`,
         { studentId },
         {
             headers: {
@@ -55,7 +56,7 @@ const setFeeStructure = async (
     payments: Payment[],
 ) => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/new/set-fee-details",
+        `${backendUrl}/new/set-fee-details`,
         {
             studentId,
             feesPlan: feePlan,
@@ -73,7 +74,7 @@ const setFeeStructure = async (
 
 const markFeeClear = async (studentId: string, allClear: boolean) => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/new/allClear",
+        `${backendUrl}/new/allClear`,
         {
             studentId,
             allClear,
@@ -138,7 +139,7 @@ export default function StudentFeeManagement({
 
     const addPayment = async (studentId: string, payment: Payment) => {
         const { data } = await axios.post(
-            "https://thepcbpoint.com/api/new/add-payment",
+            `${backendUrl}/new/add-payment`,
             {
                 studentId,
                 payment,
@@ -299,7 +300,9 @@ export default function StudentFeeManagement({
                     <div>
                         <p className="text-sm font-medium">
                             Total Amount{" "}
-                            <span className="text-red-400 font-bold">Due</span>{" "}
+                            <span className="text-red-400 font-bold">
+                                Due
+                            </span>{" "}
                         </p>
                         <p className="text-2xl font-bold">
                             ₹{feeData.totalAmountDue}

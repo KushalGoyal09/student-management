@@ -175,7 +175,7 @@ const createWeekRecord = async (
             startDate: currentDate,
             endDate: addDays(new Date(currentDate), 6)
                 .toISOString()
-                .split("T")[0], 
+                .split("T")[0],
             mentorId: seniorMentorId,
         },
     });

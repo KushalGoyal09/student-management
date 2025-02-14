@@ -22,6 +22,7 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import autoTable from "jspdf-autotable";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface SubjectTarget {
     chapterId: number;
@@ -56,20 +57,17 @@ interface PreviewModalProps {
 }
 
 const sendTargetToBackend = async (targets: DayTarget[], studentId: string) => {
-    const response = await fetch(
-        "https://thepcbpoint.com/api/target/setTarget",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-                studentId,
-                target: targets,
-            }),
+    const response = await fetch(`${backendUrl}/target/setTarget`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    );
+        body: JSON.stringify({
+            studentId,
+            target: targets,
+        }),
+    });
     return response.json();
 };
 

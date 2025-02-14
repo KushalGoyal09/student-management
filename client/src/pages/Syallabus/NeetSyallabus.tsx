@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Chapter {
     id: number;
@@ -29,7 +30,7 @@ const addChapter = async (
     chapterName: string,
 ): Promise<Chapter> => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/syllabus/add",
+        `${backendUrl}/syllabus/add`,
         {
             chapterName,
             subject,
@@ -49,7 +50,7 @@ const deleteChapter = async (
 ): Promise<boolean> => {
     try {
         await axios.post(
-            "https://thepcbpoint.com/api/syllabus/delete",
+            `${backendUrl}/syllabus/delete`,
             {
                 chapterId,
                 subject,

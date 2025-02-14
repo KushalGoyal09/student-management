@@ -68,7 +68,7 @@ const getLecturesDone = async (
     subject: Subject,
 ): Promise<LecturesDoneResponse["data"]> => {
     const { data } = await axios.post<LecturesDoneResponse>(
-        "https://thepcbpoint.com/api/target/getLecturesDone",
+        import.meta.env.VITE_BACKEND_URL + "/target/getLecturesDone",
         {
             studentId,
             chapterId,

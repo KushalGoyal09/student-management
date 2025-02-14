@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 import { tokenAtom } from "./userAtom";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Student {
     id: string;
@@ -14,14 +15,11 @@ interface Student {
 
 const fetchStudents = async (token: string): Promise<Student[]> => {
     try {
-        const { data } = await axios.get(
-            "https://thepcbpoint.com/api/new/students",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+        const { data } = await axios.get(`${backendUrl}/new/students`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-        );
+        });
         return data.data;
     } catch (error) {
         return [];

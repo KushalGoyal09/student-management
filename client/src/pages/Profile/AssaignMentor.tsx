@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertCircle } from "lucide-react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type Props = {
     studentId: string;
@@ -32,7 +33,7 @@ interface GroupMentor {
 
 const fetchSeniorMentors = async (): Promise<SeniorMentor[]> => {
     const { data } = await axios.get(
-        "https://thepcbpoint.com/api/assaign/seniorMentors",
+        import.meta.env.VITE_BACKEND_URL + "/assaign/seniorMentors",
         {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,7 +50,7 @@ const getStudentMentor = async (
     name: string;
 } | null> => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/profile/student",
+        import.meta.env.VITE_BACKEND_URL + "/profile/student",
         { studentId },
         {
             headers: {
@@ -62,7 +63,7 @@ const getStudentMentor = async (
 
 const fetchMentors = async (seniorMentorId: string): Promise<GroupMentor[]> => {
     const { data } = await axios.post(
-        `https://thepcbpoint.com/api/assaign/groupMentors/`,
+        `${backendUrl}/assaign/groupMentors/`,
         {
             seniorMentorId,
         },
@@ -150,7 +151,7 @@ export default function AssignMentor({ studentId, currentMentor }: Props) {
         setIsLoading(true);
         try {
             await axios.post(
-                "https://thepcbpoint.com/api/new/assign-mentor",
+                import.meta.env.VITE_BACKEND_URL + "/new/assign-mentor",
                 {
                     studentId,
                     mentorId: selectedGroupMentor,

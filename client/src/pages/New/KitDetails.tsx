@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import * as XLSX from "xlsx";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Student {
     id: string;
@@ -47,7 +48,7 @@ const getStudentsData = async (
     students: Array<String>,
 ): Promise<StudentWithAddress[]> => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/new/address",
+        `${backendUrl}/new/address`,
         {
             students,
         },
@@ -62,14 +63,11 @@ const getStudentsData = async (
 
 const fetchKitDispatchData = async (): Promise<Student[]> => {
     try {
-        const { data } = await axios.get(
-            "https://thepcbpoint.com/api/new/kit-data",
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+        const { data } = await axios.get(`${backendUrl}/new/kit-data`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-        );
+        });
         return data.data;
     } catch (error) {
         console.error("Error fetching kit dispatch data:", error);
@@ -80,7 +78,7 @@ const fetchKitDispatchData = async (): Promise<Student[]> => {
 const markReady = async (studentId: string) => {
     try {
         await axios.post(
-            "https://thepcbpoint.com/api/new/kit-ready",
+            `${backendUrl}/new/kit-ready`,
             { studentId },
             {
                 headers: {
@@ -97,7 +95,7 @@ const markDispatched = async (studentId: string) => {
     try {
         const date = new Date();
         await axios.post(
-            "https://thepcbpoint.com/api/new/kit-dispatch",
+            `${backendUrl}/new/kit-dispatch`,
             { studentId, date },
             {
                 headers: {

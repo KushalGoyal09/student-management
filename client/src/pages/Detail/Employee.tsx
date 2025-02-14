@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Employee {
     id: string;
@@ -8,14 +9,11 @@ interface Employee {
 }
 
 const fetchEmployees = async (): Promise<Employee[]> => {
-    const { data } = await axios.get(
-        "https://thepcbpoint.com/api/detail/employes",
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+    const { data } = await axios.get(`${backendUrl}/detail/employes`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    );
+    });
     return data.data;
 };
 

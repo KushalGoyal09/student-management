@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Response {
     success: boolean;
@@ -35,7 +36,7 @@ export default function Component() {
         }
         try {
             const { data } = await axios.post<Response>(
-                "https://thepcbpoint.com/api/admin/change-password",
+                `${backendUrl}/admin/change-password`,
                 {
                     newPassword: password,
                 },

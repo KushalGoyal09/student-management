@@ -15,7 +15,7 @@ interface Syllabus {
 
 const fetchSyllabus = async (token: string): Promise<Syllabus> => {
     const response = await fetch(
-        "https://thepcbpoint.com/api/syllabus/getAll",
+        import.meta.env.VITE_BACKEND_URL + "/syllabus/getAll",
         {
             headers: {
                 Authorization: `Bearer ${token}`,

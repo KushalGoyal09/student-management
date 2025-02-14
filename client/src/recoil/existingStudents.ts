@@ -17,7 +17,7 @@ interface Student {
 const fetchStudents = async (token: string): Promise<Student[]> => {
     try {
         const { data } = await axios.get(
-            "https://thepcbpoint.com/api/detail/students",
+            import.meta.env.VITE_BACKEND_URL + "/detail/students",
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

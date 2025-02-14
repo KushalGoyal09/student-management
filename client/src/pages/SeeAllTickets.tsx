@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause } from "lucide-react";
 import { Role } from "@/recoil/userAtom";
 import { useNavigate } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface TicketResponse {
     id: string;
@@ -35,14 +36,11 @@ export default function StylizedTickets() {
 
     const fetchTickets = async () => {
         try {
-            const response = await fetch(
-                "https://thepcbpoint.com/api/ticket/get",
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
+            const response = await fetch(`${backendUrl}/ticket/get`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
-            );
+            });
             const data = await response.json();
             setTickets(data.data);
         } catch (error) {
@@ -61,7 +59,7 @@ export default function StylizedTickets() {
                 cancelAnimationFrame(animationRef.current!);
             }
             const audio = new Audio(
-                `https://thepcbpoint.com/api/ticket/uploads/${audioFile}`,
+                `${backendUrl}/ticket/uploads/${audioFile}`,
             );
             audio.play();
             setCurrentAudio(audio);
@@ -88,7 +86,7 @@ export default function StylizedTickets() {
 
     const handleResolveTicket = async (id: string) => {
         try {
-            await fetch("https://thepcbpoint.com/api/ticket/close", {
+            await fetch(`${backendUrl}/ticket/close`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

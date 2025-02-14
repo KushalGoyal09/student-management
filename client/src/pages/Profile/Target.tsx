@@ -49,7 +49,7 @@ type Props = {
 
 const markComplete = async (targetId: string) => {
     await axios.post(
-        "https://thepcbpoint.com/api/target/complete",
+        import.meta.env.VITE_BACKEND_URL + "/target/complete",
         { targetId },
         {
             headers: {
@@ -61,7 +61,7 @@ const markComplete = async (targetId: string) => {
 
 const deleteTarget = async (targetId: string) => {
     await axios.post(
-        "https://thepcbpoint.com/api/target/delete",
+        import.meta.env.VITE_BACKEND_URL + "/target/delete",
         { targetId },
         {
             headers: {
@@ -78,7 +78,7 @@ const TargetComponent: React.FC<Props> = ({ studentId }) => {
     useEffect(() => {
         const fetchTargets = async () => {
             const { data } = await axios.post(
-                "https://thepcbpoint.com/api/target/get-incomplete",
+                import.meta.env.VITE_BACKEND_URL + "/target/get-incomplete",
                 { studentId },
                 {
                     headers: {

@@ -19,6 +19,7 @@ import {
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import axios, { isAxiosError } from "axios";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function AddSeniorMentor() {
     const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +43,7 @@ export default function AddSeniorMentor() {
         const getSupervisors = async () => {
             try {
                 const { data } = await axios.get(
-                    "https://thepcbpoint.com/api/detail/supervisors",
+                    `${backendUrl}/detail/supervisors`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +73,7 @@ export default function AddSeniorMentor() {
         setSuccess("");
         try {
             const { data } = await axios.post(
-                "https://thepcbpoint.com/api/add/senior-mentor",
+                `${backendUrl}/add/senior-mentor`,
                 formData,
                 {
                     headers: {

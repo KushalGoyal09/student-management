@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import axios, { isAxiosError } from "axios";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const AddSupervisor = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +35,7 @@ const AddSupervisor = () => {
 
         try {
             const { data } = await axios.post(
-                "https://thepcbpoint.com/api/add/supervisor",
+                `${backendUrl}/add/supervisor`,
                 {
                     name,
                     username,

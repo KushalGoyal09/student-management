@@ -1,8 +1,7 @@
-"use client";
-
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { Play, Pause } from "lucide-react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Ticket {
     id: string;
@@ -15,14 +14,11 @@ interface Ticket {
 }
 
 const getMyTickets = async (): Promise<Ticket[]> => {
-    const { data } = await axios.get(
-        "https://thepcbpoint.com/api/ticket/get-my",
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+    const { data } = await axios.get(`${backendUrl}/ticket/get-my`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    );
+    });
     return data.data;
 };
 
@@ -50,7 +46,7 @@ export default function Previous() {
             setCurrentAudio(audioFile);
             setIsPlaying(true);
             if (audioRef.current) {
-                audioRef.current.src = `https://thepcbpoint.com/api/ticket/uploads/${audioFile}`;
+                audioRef.current.src = `${backendUrl}/ticket/uploads/${audioFile}`;
                 audioRef.current.play();
             }
         }
@@ -106,7 +102,7 @@ export default function Previous() {
                                     <div className="mt-2">
                                         <audio
                                             ref={audioRef}
-                                            src={`https://thepcbpoint.com/api/ticket/uploads/${ticket.audioFile}`}
+                                            src={`${backendUrl}/ticket/uploads/${ticket.audioFile}`}
                                             onEnded={() => setIsPlaying(false)}
                                             className="w-full"
                                             controls

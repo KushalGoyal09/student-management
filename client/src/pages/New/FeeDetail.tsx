@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Payment {
     amount: number;
@@ -57,14 +58,11 @@ export default function FeeDetails() {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const { data } = await axios.get(
-                    "https://thepcbpoint.com/api/new/fee-data",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
+                const { data } = await axios.get(`${backendUrl}/new/fee-data`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                );
+                });
                 setStudents(data.data);
                 setTotalAmountDue(data.totalAmountDue);
             } catch (error) {

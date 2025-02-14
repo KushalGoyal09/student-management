@@ -12,6 +12,7 @@ import { endOfWeek, startOfWeek, addDays, format } from "date-fns";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import DetailedDailySummary from "./DailyCallRecord";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type CallStatus = "Scheduled" | "Done" | "DNP" | "Nothing";
 
@@ -43,7 +44,7 @@ interface ApiResponse {
 
 const fetchWeekData = async (weekStart: string) => {
     const { data } = await axios.post<ApiResponse>(
-        "https://thepcbpoint.com/api/call/week-record",
+        `${backendUrl}/call/week-record`,
         { startDay: weekStart },
         {
             headers: {
@@ -66,7 +67,7 @@ const fetchWeekData = async (weekStart: string) => {
 
 const fetchStudentsData = async () => {
     const { data } = await axios.get<{ data: Student[] }>(
-        "https://thepcbpoint.com/api/detail/students",
+        `${backendUrl}/detail/students`,
         {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +84,7 @@ const saveCallStatus = async (
     date: string,
 ) => {
     await axios.post(
-        "https://thepcbpoint.com/api/call/save-call-status",
+        `${backendUrl}/call/save-call-status`,
         { studentId, day, status, date },
         {
             headers: {

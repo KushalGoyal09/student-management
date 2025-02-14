@@ -40,7 +40,7 @@ const StudentCallUpdates = ({ studentId }: StudentCallUpdatesProps) => {
         const weekStart = startOfWeek(currentWeek, { weekStartsOn: 1 });
         try {
             const response = await fetch(
-                "https://thepcbpoint.com/api/call/student",
+                import.meta.env.VITE_BACKEND_URL + "/call/student",
                 {
                     method: "POST",
                     headers: {

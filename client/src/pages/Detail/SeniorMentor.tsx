@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, User, Check, Star } from "lucide-react";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface GroupMentor {
     id: string;
@@ -23,7 +24,7 @@ interface SeniorMentor {
 const fetchSeniorMentors = async (): Promise<SeniorMentor[]> => {
     try {
         const { data } = await axios.get(
-            "https://thepcbpoint.com/api/detail/senior-mentors",
+            `${backendUrl}/detail/senior-mentors`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,7 +43,7 @@ const fetchSeniorMentors = async (): Promise<SeniorMentor[]> => {
 const fetchSMDetails = async (username: string): Promise<SeniorMentor> => {
     try {
         const { data } = await axios.post(
-            "https://thepcbpoint.com/api/detail/senior-mentor-detail",
+            `${backendUrl}/detail/senior-mentor-detail`,
             {
                 seniorMentorUsername: username,
             },

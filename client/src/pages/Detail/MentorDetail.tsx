@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Star, Phone, MessageCircle } from "lucide-react";
 import { format, startOfWeek, addDays } from "date-fns";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Student {
     id: string;
@@ -44,7 +45,7 @@ const fetchMentorDetails = async (username: string): Promise<MentorData> => {
         data: MentorData;
         success: boolean;
     }>(
-        "https://thepcbpoint.com/api/detail/mentor-detail",
+        `${backendUrl}/detail/mentor-detail`,
         {
             groupMentorUsername: username,
         },

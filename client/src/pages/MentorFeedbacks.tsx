@@ -8,6 +8,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Response {
     data: string[];
@@ -21,7 +22,7 @@ export default function MentorFeedback() {
         const getFeedback = async () => {
             try {
                 const { data } = await axios.get<Response>(
-                    "https://thepcbpoint.com/api/rating/mentor",
+                    `${backendUrl}/rating/mentor`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,

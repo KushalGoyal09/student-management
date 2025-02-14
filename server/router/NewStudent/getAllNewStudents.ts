@@ -37,7 +37,7 @@ const getAllNewStudents = async (req: AuthRequest, res: Response) => {
         },
         orderBy: {
             createdAt: "desc",
-        }
+        },
     });
     return res.status(200).json({
         success: true,

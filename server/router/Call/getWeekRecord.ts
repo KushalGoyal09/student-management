@@ -161,5 +161,5 @@ const createWeekRecord = async (
 
     await Promise.all(callCreationPromises);
 
-    return await getCallRecord(currentDate,mentorId);
+    return await getCallRecord(currentDate, mentorId);
 };

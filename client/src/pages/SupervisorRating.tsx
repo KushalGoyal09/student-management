@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/card";
 import axios, { isAxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type Mentor = {
     id: string;
@@ -41,7 +42,7 @@ const fetchRatings = async (groupMentorId: string): Promise<Ratings | null> => {
             data: Ratings | null;
             success: boolean;
         }>(
-            "https://thepcbpoint.com/api/rating/get",
+            `${backendUrl}/rating/get`,
             { groupMentorId },
             {
                 headers: {
@@ -72,7 +73,7 @@ export default function MentorRatingPage() {
         const fetchMentors = async () => {
             try {
                 const { data } = await axios.get(
-                    "https://thepcbpoint.com/api/detail/mentors",
+                    `${backendUrl}/detail/mentors`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -129,7 +130,7 @@ export default function MentorRatingPage() {
         event.preventDefault();
         try {
             await axios.post(
-                "https://thepcbpoint.com/api/rating/supervisor",
+                `${backendUrl}/rating/supervisor`,
                 {
                     groupMentorId: selectedMentor,
                     ...ratings,

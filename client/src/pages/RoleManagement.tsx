@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, UserCircle } from "lucide-react";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Permission {
     FeeManagement: boolean;
@@ -26,14 +27,11 @@ interface Supervisor {
 }
 
 const fetchSupervisor = async (): Promise<Supervisor[]> => {
-    const { data } = await axios.get(
-        "https://thepcbpoint.com/api/role/get-super",
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+    const { data } = await axios.get(`${backendUrl}/role/get-super`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    );
+    });
     return data.data;
 };
 
@@ -42,7 +40,7 @@ const getPermissions = async (supervisorId: string) => {
         success: boolean;
         data: Permission;
     }>(
-        "https://thepcbpoint.com/api/role/get",
+        `${backendUrl}/role/get`,
         {
             supervisorId,
         },
@@ -63,7 +61,7 @@ const setPermissionsBackend = async (
 ) => {
     try {
         await axios.post(
-            "https://thepcbpoint.com/api/role/set",
+            `${backendUrl}/role/set`,
             {
                 supervisorId,
                 FeeManagement,

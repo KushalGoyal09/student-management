@@ -11,6 +11,7 @@ import {
 import { endOfWeek, startOfWeek, addDays, format } from "date-fns";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 type CallStatus = "Scheduled" | "Done" | "DNP" | "Nothing";
 
@@ -57,7 +58,7 @@ interface ApiResponse {
 
 const fetchWeekData = async (weekStart: string, groupMentorId: string) => {
     const { data } = await axios.post<ApiResponse>(
-        "https://thepcbpoint.com/api/seniorCall/get",
+        `${backendUrl}/seniorCall/get`,
         { startDay: weekStart, groupMentorId },
         {
             headers: {
@@ -93,7 +94,7 @@ const fetchWeekData = async (weekStart: string, groupMentorId: string) => {
 
 const fetchMentorsData = async () => {
     const { data } = await axios.get<{ data: GroupMentor[] }>(
-        "https://thepcbpoint.com/api/seniorCall/get-mentors",
+        `${backendUrl}/seniorCall/get-mentors`,
         {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -111,7 +112,7 @@ const saveCallStatus = async (
     callType: CallType,
 ) => {
     await axios.post(
-        "https://thepcbpoint.com/api/seniorCall/save",
+        `${backendUrl}/seniorCall/save`,
         { studentId, day, status, date, callType },
         {
             headers: {

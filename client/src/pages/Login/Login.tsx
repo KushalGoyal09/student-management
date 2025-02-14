@@ -15,6 +15,7 @@ import axios, { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { Role, tokenAtom, userAtom } from "@/recoil/userAtom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Response {
     success: boolean;
@@ -39,13 +40,10 @@ export default function MentorLoginPage() {
             return;
         }
         try {
-            const { data } = await axios.post<Response>(
-                "https://thepcbpoint.com/api/login",
-                {
-                    username,
-                    password,
-                },
-            );
+            const { data } = await axios.post<Response>(`${backendUrl}/login`, {
+                username,
+                password,
+            });
             localStorage.setItem("token", data.token);
             setToken(data.token);
             //@ts-ignore

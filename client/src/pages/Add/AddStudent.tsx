@@ -31,6 +31,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const formSchema = z.object({
     fullName: z.string(),
@@ -145,7 +146,7 @@ export default function AddStudent() {
         setIsSubmitting(true);
         try {
             await axios.post(
-                "https://thepcbpoint.com/api/add/student",
+                `${backendUrl}/add/student`,
                 {
                     name: data.fullName,
                     gender: data.gender,

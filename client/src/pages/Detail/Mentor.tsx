@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { User, ChevronRight } from "lucide-react";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface Mentor {
     id: number;
@@ -14,14 +15,11 @@ interface Mentor {
 
 const fetchMentors = async (): Promise<Mentor[]> => {
     try {
-        const { data } = await axios.get(
-            "https://thepcbpoint.com/api/detail/mentors",
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+        const { data } = await axios.get(`${backendUrl}/detail/mentors`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-        );
+        });
         return data.data;
     } catch (error) {
         toast({

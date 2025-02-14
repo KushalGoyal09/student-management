@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface SubjectVision {
     notes: boolean;
@@ -54,7 +55,7 @@ interface VisionBoardComponentProps {
 
 const getVision = async (studentId: string): Promise<VisionBoard> => {
     const { data } = await axios.post(
-        "https://thepcbpoint.com/api/vision/get",
+        `${backendUrl}/vision/get`,
         { studentId },
         {
             headers: {
@@ -67,7 +68,7 @@ const getVision = async (studentId: string): Promise<VisionBoard> => {
 
 const setVision = async (data: SetVision) => {
     try {
-        await axios.post("https://thepcbpoint.com/api/vision/set", data, {
+        await axios.post(`${backendUrl}/vision/set`, data, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },

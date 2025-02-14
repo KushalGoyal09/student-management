@@ -101,7 +101,7 @@ const editMentorSalaryDetail = async (req: AuthRequest, res: Response) => {
             paid: true,
             userId: true,
         },
-    })
+    });
     res.json({
         success: true,
         salary,

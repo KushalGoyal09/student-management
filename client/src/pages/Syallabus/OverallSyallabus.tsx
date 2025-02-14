@@ -47,8 +47,10 @@ interface OverallSyllabusResponse {
     biology: SubjectOverallSyllabus[];
 }
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const fetchOverallSyllabus = async (): Promise<OverallSyllabusResponse> => {
-    const { data } = await axios.get("https://thepcbpoint.com/api/overall", {
+    const { data } = await axios.get(`${backendUrl}/overall`, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

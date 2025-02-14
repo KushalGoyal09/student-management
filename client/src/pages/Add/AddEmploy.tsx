@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import axios, { isAxiosError } from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const AddEmploy = () => {
     const [name, setName] = useState("");
@@ -31,7 +32,7 @@ const AddEmploy = () => {
 
         try {
             const { data } = await axios.post(
-                "https://thepcbpoint.com/api/add/employee",
+                `${backendUrl}/add/employee`,
                 {
                     name,
                     phoneNumber,

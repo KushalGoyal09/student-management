@@ -8,6 +8,7 @@ import { isAxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import { useRecoilValue } from "recoil";
 import { Role, userAtom } from "@/recoil/userAtom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface SyllabusItem {
     id: string;
@@ -40,9 +41,7 @@ export default function AdminSyllabus() {
 
     const fetchSyllabus = async () => {
         try {
-            const response = await fetch(
-                "https://thepcbpoint.com/api/syllabus/getAll",
-            );
+            const response = await fetch(`${backendUrl}/syllabus/getAll`);
             if (!response.ok) throw new Error("Failed to fetch syllabus");
             const data = await response.json();
             setSubjectData(data);
@@ -57,7 +56,7 @@ export default function AdminSyllabus() {
         if (!newChapter.trim()) return;
         try {
             const response = await fetch(
-                `https://thepcbpoint.com/api/syllabus/add${subject.charAt(0).toUpperCase() + subject.slice(1)}`,
+                `${backendUrl}/syllabus/add${subject.charAt(0).toUpperCase() + subject.slice(1)}`,
                 {
                     method: "POST",
                     headers: {
@@ -92,7 +91,7 @@ export default function AdminSyllabus() {
     const deleteChapter = async (subject: string, id: string) => {
         try {
             const response = await fetch(
-                `https://thepcbpoint.com/api/syllabus/delete${subject.charAt(0).toUpperCase() + subject.slice(1)}`,
+                `${backendUrl}/syllabus/delete${subject.charAt(0).toUpperCase() + subject.slice(1)}`,
                 {
                     method: "POST",
                     headers: {

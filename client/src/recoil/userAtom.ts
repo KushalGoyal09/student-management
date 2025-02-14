@@ -67,7 +67,7 @@ export const nameAtom = atom<string | null>({
 const fetchUser = async (token: string): Promise<User | null> => {
     try {
         const { data } = await axios.get<Response>(
-            "https://thepcbpoint.com/api/me",
+            import.meta.env.VITE_BACKEND_URL + "/me",
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { User, MessageCircle } from "lucide-react";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function WelcomeComponent({ name }: { name: string }) {
     const [isHovered, setIsHovered] = useState(false);
@@ -11,14 +12,11 @@ export default function WelcomeComponent({ name }: { name: string }) {
     useEffect(() => {
         const fetchWhatsappLink = async () => {
             try {
-                const { data } = await axios.get(
-                    "https://thepcbpoint.com/api/me",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
+                const { data } = await axios.get(`${backendUrl}/me`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                );
+                });
                 setWhatsappLink(data.whatsappLink);
             } catch (error) {
                 console.error("Failed to fetch WhatsApp link:", error);

@@ -3,14 +3,19 @@ import { tokenAtom } from "./userAtom";
 import axios from "axios";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-interface Student {
+export interface Student {
     id: string;
     name: string;
+    whattsapNumber: string;
     callNumber: string;
+    target: string;
+    StudyHours: string;
+    class: string;
     dropperStatus: string;
     previousScore: string;
     platform: string;
     createdAt: Date;
+    status: boolean;
 }
 
 const fetchStudents = async (token: string): Promise<Student[]> => {

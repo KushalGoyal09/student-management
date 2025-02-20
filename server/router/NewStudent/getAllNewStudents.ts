@@ -34,6 +34,11 @@ const getAllNewStudents = async (req: AuthRequest, res: Response) => {
             platform: true,
             dropperStatus: true,
             previousScore: true,
+            whattsapNumber: true,
+            status: true,
+            class: true,
+            target: true,
+            StudyHours: true,
         },
         orderBy: {
             createdAt: "desc",

@@ -24,6 +24,7 @@ import overallRouter from "./router/OverallSyallabus";
 import roleRouter from "./router/RoleManagement";
 import assignRouter from "./router/Assaign";
 import seniorCallRouter from "./router/SeniorCall";
+import premadeTargetRouter from "./router/premadeTarget";
 import cors from "cors";
 
 app.use(cors());
@@ -48,6 +49,7 @@ app.use("/api/overall", overallRouter);
 app.use("/api/role", roleRouter);
 app.use("/api/assaign", assignRouter);
 app.use("/api/seniorCall", seniorCallRouter);
+app.use("/api/premadeTarget", premadeTargetRouter);
 
 app.use(notFound);
 app.use(errorHandler);

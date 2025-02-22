@@ -34,6 +34,7 @@ const Syallabus = lazy(() => import("./pages/Syallabus/Syallabus"));
 const AddEmploy = lazy(() => import("./pages/Add/AddEmploy"));
 const Ticket = lazy(() => import("./pages/Ticket/Ticket"));
 const Employee = lazy(() => import("./pages/Detail/Employee"));
+const PremadeTarget = lazy(() => import("./pages/PremadeTarget/PremadeTarget"));
 import { RecoilRoot } from "recoil";
 
 const App = () => {
@@ -49,6 +50,10 @@ const App = () => {
                 {
                     path: "/login",
                     element: <Login />,
+                },
+                {
+                    path: "/premade-target",
+                    element: <PremadeTarget />,
                 },
                 {
                     path: "/change-password",

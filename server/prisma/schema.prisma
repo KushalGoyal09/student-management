@@ -481,9 +481,11 @@ enum Month {
 }
 
 model TargetSet {
-  id     String          @id @default(uuid())
-  name   String          @unique
-  target PremadeTarget[]
+  id        String          @id @default(uuid())
+  name      String          @unique
+  target    PremadeTarget[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 model PremadeTarget {
@@ -491,8 +493,8 @@ model PremadeTarget {
   TargetSet                TargetSet               @relation(fields: [targetSetId], references: [id])
   targetSetId              String
   day                      Int
-  physics                  PhysicsPremadeTarget    @relation(fields: [physicsPremadeTargetId], references: [id])
-  physicsPremadeTargetId   String
+  physics                  PhysicsPremadeTarget?   @relation(fields: [physicsPremadeTargetId], references: [id])
+  physicsPremadeTargetId   String?
   chemistry                ChemistryPremadeTarget? @relation(fields: [chemistryPremadeTargetId], references: [id])
   chemistryPremadeTargetId String?
   biology                  BiologyPremadeTarget?   @relation(fields: [biologyPremadeTargetId], references: [id])

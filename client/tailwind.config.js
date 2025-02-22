@@ -15,7 +15,7 @@ export default {
   		colors: {
 			"pcb": "#8A0C7A",
 			"employee": "#336699"
-		},
+		},	
   		keyframes: {
   			'accordion-down': {
   				from: {

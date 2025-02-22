@@ -342,27 +342,30 @@ model Admin {
 }
 
 model PhysicsSyallabus {
-  id                 Int                  @id @default(autoincrement())
-  chapterName        String
-  createdAt          DateTime             @default(now())
-  PhysicsTarget      PhysicsTarget[]
-  PhysicsVisionBoard PhysicsVisionBoard[]
-}
-
-model ChemistrySyallabus {
   id                   Int                    @id @default(autoincrement())
   chapterName          String
   createdAt            DateTime               @default(now())
-  ChemistryTarget      ChemistryTarget[]
-  ChemistryVisionBoard ChemistryVisionBoard[]
+  PhysicsTarget        PhysicsTarget[]
+  PhysicsVisionBoard   PhysicsVisionBoard[]
+  PhysicsPremadeTarget PhysicsPremadeTarget[]
+}
+
+model ChemistrySyallabus {
+  id                     Int                      @id @default(autoincrement())
+  chapterName            String
+  createdAt              DateTime                 @default(now())
+  ChemistryTarget        ChemistryTarget[]
+  ChemistryVisionBoard   ChemistryVisionBoard[]
+  ChemistryPremadeTarget ChemistryPremadeTarget[]
 }
 
 model BiologySyallabus {
-  id                 Int                  @id @default(autoincrement())
-  chapterName        String
-  createdAt          DateTime             @default(now())
-  BiologyTarget      BiologyTarget[]
-  BiologyVisionBoard BiologyVisionBoard[]
+  id                   Int                    @id @default(autoincrement())
+  chapterName          String
+  createdAt            DateTime               @default(now())
+  BiologyTarget        BiologyTarget[]
+  BiologyVisionBoard   BiologyVisionBoard[]
+  BiologyPremadeTarget BiologyPremadeTarget[]
 }
 
 model Target {
@@ -475,4 +478,52 @@ enum Month {
   October
   November
   December
+}
+
+model TargetSet {
+  id     String          @id @default(uuid())
+  name   String          @unique
+  target PremadeTarget[]
+}
+
+model PremadeTarget {
+  id                       String                  @id @default(uuid())
+  TargetSet                TargetSet               @relation(fields: [targetSetId], references: [id])
+  targetSetId              String
+  day                      Int
+  physics                  PhysicsPremadeTarget    @relation(fields: [physicsPremadeTargetId], references: [id])
+  physicsPremadeTargetId   String
+  chemistry                ChemistryPremadeTarget? @relation(fields: [chemistryPremadeTargetId], references: [id])
+  chemistryPremadeTargetId String?
+  biology                  BiologyPremadeTarget?   @relation(fields: [biologyPremadeTargetId], references: [id])
+  biologyPremadeTargetId   String?
+
+  @@unique([targetSetId, day])
+}
+
+model PhysicsPremadeTarget {
+  id              String           @id @default(uuid())
+  PremadeTarget   PremadeTarget[]
+  chapterId       Int
+  numberOfLecture Int
+  isFinal         Boolean          @default(false)
+  Chapter         PhysicsSyallabus @relation(fields: [chapterId], references: [id])
+}
+
+model ChemistryPremadeTarget {
+  id              String             @id @default(uuid())
+  PremadeTarget   PremadeTarget[]
+  chapterId       Int
+  numberOfLecture Int
+  isFinal         Boolean            @default(false)
+  Chapter         ChemistrySyallabus @relation(fields: [chapterId], references: [id])
+}
+
+model BiologyPremadeTarget {
+  id              String           @id @default(uuid())
+  PremadeTarget   PremadeTarget[]
+  chapterId       Int
+  numberOfLecture Int
+  isFinal         Boolean          @default(false)
+  Chapter         BiologySyallabus @relation(fields: [chapterId], references: [id])
 }

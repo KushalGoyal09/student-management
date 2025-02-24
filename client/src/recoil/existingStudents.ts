@@ -11,6 +11,7 @@ interface Student {
     platform: string;
     dropperStatus: string;
     previousScore: string;
+    createdAt: Date;
     whattsapGroupLink: string | null;
 }
 

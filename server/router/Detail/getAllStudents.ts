@@ -39,6 +39,7 @@ const getAllStudents = async (req: AuthRequest, res: Response) => {
                 previousScore: true,
                 id: true,
                 whattsapGroupLink: true,
+                createdAt: true,
             },
         });
         res.json({

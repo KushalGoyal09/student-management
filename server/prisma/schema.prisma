@@ -489,23 +489,21 @@ model TargetSet {
 }
 
 model PremadeTarget {
-  id                       String                  @id @default(uuid())
-  TargetSet                TargetSet               @relation(fields: [targetSetId], references: [id])
-  targetSetId              String
-  day                      Int
-  physics                  PhysicsPremadeTarget?   @relation(fields: [physicsPremadeTargetId], references: [id])
-  physicsPremadeTargetId   String?
-  chemistry                ChemistryPremadeTarget? @relation(fields: [chemistryPremadeTargetId], references: [id])
-  chemistryPremadeTargetId String?
-  biology                  BiologyPremadeTarget?   @relation(fields: [biologyPremadeTargetId], references: [id])
-  biologyPremadeTargetId   String?
+  id                     String                   @id @default(uuid())
+  TargetSet              TargetSet                @relation(fields: [targetSetId], references: [id])
+  targetSetId            String
+  day                    Int
+  PhysicsPremadeTarget   PhysicsPremadeTarget[]
+  ChemistryPremadeTarget ChemistryPremadeTarget[]
+  BiologyPremadeTarget   BiologyPremadeTarget[]
 
   @@unique([targetSetId, day])
 }
 
 model PhysicsPremadeTarget {
   id              String           @id @default(uuid())
-  PremadeTarget   PremadeTarget[]
+  PremadeTarget   PremadeTarget    @relation(fields: [premadeTargetId], references: [id])
+  premadeTargetId String
   chapterId       Int
   numberOfLecture Int
   isFinal         Boolean          @default(false)
@@ -514,7 +512,8 @@ model PhysicsPremadeTarget {
 
 model ChemistryPremadeTarget {
   id              String             @id @default(uuid())
-  PremadeTarget   PremadeTarget[]
+  PremadeTarget   PremadeTarget      @relation(fields: [premadeTargetId], references: [id])
+  premadeTargetId String
   chapterId       Int
   numberOfLecture Int
   isFinal         Boolean            @default(false)
@@ -523,7 +522,8 @@ model ChemistryPremadeTarget {
 
 model BiologyPremadeTarget {
   id              String           @id @default(uuid())
-  PremadeTarget   PremadeTarget[]
+  PremadeTarget   PremadeTarget    @relation(fields: [premadeTargetId], references: [id])
+  premadeTargetId String
   chapterId       Int
   numberOfLecture Int
   isFinal         Boolean          @default(false)

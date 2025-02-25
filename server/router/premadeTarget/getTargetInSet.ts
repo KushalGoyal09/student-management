@@ -22,32 +22,41 @@ const getTargetInSet = async (req: Request, res: Response) => {
         select: {
             id: true,
             day: true,
-            physics: {
+            PhysicsPremadeTarget: {
                 select: {
                     chapterId: true,
                     numberOfLecture: true,
                     isFinal: true,
                 },
             },
-            chemistry: {
+            ChemistryPremadeTarget: {
                 select: {
                     chapterId: true,
-                    numberOfLecture: true,
                     isFinal: true,
+                    numberOfLecture: true,
                 },
             },
-            biology: {
+            BiologyPremadeTarget: {
                 select: {
                     chapterId: true,
-                    numberOfLecture: true,
                     isFinal: true,
+                    numberOfLecture: true,
                 },
             },
         },
     });
+
     return res.json({
         success: true,
-        data: target,
+        data: target.map((t) => {
+            return {
+                id: t.id,
+                day: t.day,
+                physics: t.PhysicsPremadeTarget,
+                chemistry: t.ChemistryPremadeTarget,
+                biology: t.BiologyPremadeTarget,
+            };
+        }),
     });
 };
 

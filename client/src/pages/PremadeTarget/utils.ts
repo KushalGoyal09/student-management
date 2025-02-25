@@ -15,17 +15,17 @@ export interface SubjectTarget {
 export interface Target {
     id: string;
     day: number;
-    physics: SubjectTarget | null;
-    chemistry: SubjectTarget | null;
-    biology: SubjectTarget | null;
+    physics: SubjectTarget[];
+    chemistry: SubjectTarget[];
+    biology: SubjectTarget[];
 }
 
 export interface CreateTarget {
     setId: string;
     day: number;
-    physicsTarget: SubjectTarget | undefined;
-    chemistryTarget: SubjectTarget | undefined;
-    biologyTarget: SubjectTarget | undefined;
+    physicsTarget: SubjectTarget[];
+    chemistryTarget: SubjectTarget[];
+    biologyTarget: SubjectTarget[];
 }
 
 const getAuthHeaders = () => {

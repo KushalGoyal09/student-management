@@ -7,7 +7,7 @@ const AddMentor = lazy(() => import("./pages/Add/AddMentor"));
 const AddSeniorMentor = lazy(() => import("./pages/Add/AddSeniorMentor"));
 const AddStudent = lazy(() => import("./pages/Add/AddStudent"));
 const AddSupervisor = lazy(() => import("./pages/Add/AddSupervisor"));
-const Target = lazy(() => import("./pages/Target/Target"));
+const Target = lazy(() => import("./pages/Target/Test"));
 const ChangePassword = lazy(() => import("./pages/Admin/ChangePassword"));
 const MentorRatingPage = lazy(() => import("./pages/SupervisorRating"));
 const SupervisorDetails = lazy(() => import("./pages/Detail/Supervisor"));

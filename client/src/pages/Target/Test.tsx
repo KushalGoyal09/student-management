@@ -206,6 +206,12 @@ export default function TargetAssignment() {
                 },
             }));
 
+            const columnAssignments: Record<Subject, number[]> = {
+                physics: [0, 0, 0],
+                chemistry: [0, 0, 0],
+                biology: [0, 0, 0],
+            };
+
             const processedTargets = targets.map((target) => {
                 const targetDate = new Date(startDate);
                 targetDate.setDate(
@@ -216,53 +222,58 @@ export default function TargetAssignment() {
                 (["physics", "chemistry", "biology"] as const).forEach(
                     (subject) => {
                         target[subject].forEach((t) => {
-                            const columnIndex =
-                                selectedChapters[targetType][subject].indexOf(
-                                    0,
-                                );
-                            if (columnIndex !== -1) {
-                                handleChapterSelect(
-                                    targetType,
-                                    subject,
-                                    columnIndex,
-                                    t.chapterId,
-                                );
+                            // Find first available column for this subject
+                            const columnIndex = columnAssignments[
+                                subject
+                            ].findIndex((v) => v === 0);
+                            if (columnIndex === -1) return;
 
-                                const checkboxKey = `${dateStr}-${targetType}-${subject}-${columnIndex}`;
-                                setCheckboxStates((prev) => ({
-                                    ...prev,
-                                    [checkboxKey]: true,
-                                }));
+                            // Mark column as used
+                            columnAssignments[subject][columnIndex] = 1;
 
-                                setOngoingChapters((prev) => {
-                                    const subjectChapters =
-                                        prev[targetType][subject];
-                                    if (
-                                        !subjectChapters.find(
-                                            (ch) =>
-                                                ch.chapterId === t.chapterId,
-                                        )
-                                    ) {
-                                        return {
-                                            ...prev,
-                                            [targetType]: {
-                                                ...prev[targetType],
-                                                [subject]: [
-                                                    ...subjectChapters,
-                                                    {
-                                                        chapterId: t.chapterId,
-                                                        lecturesPerDay:
-                                                            t.numberOfLecture,
-                                                        lecturesDone: 0,
-                                                        isComplete: false,
-                                                    },
-                                                ],
-                                            },
-                                        };
-                                    }
-                                    return prev;
-                                });
-                            }
+                            // Update selected chapters
+                            handleChapterSelect(
+                                targetType,
+                                subject,
+                                columnIndex,
+                                t.chapterId,
+                            );
+
+                            // Update checkbox states
+                            const checkboxKey = `${dateStr}-${targetType}-${subject}-${columnIndex}`;
+                            setCheckboxStates((prev) => ({
+                                ...prev,
+                                [checkboxKey]: true,
+                            }));
+
+                            // Update ongoing chapters
+                            setOngoingChapters((prev) => {
+                                const subjectChapters =
+                                    prev[targetType][subject];
+                                if (
+                                    !subjectChapters.find(
+                                        (ch) => ch.chapterId === t.chapterId,
+                                    )
+                                ) {
+                                    return {
+                                        ...prev,
+                                        [targetType]: {
+                                            ...prev[targetType],
+                                            [subject]: [
+                                                ...subjectChapters,
+                                                {
+                                                    chapterId: t.chapterId,
+                                                    lecturesPerDay:
+                                                        t.numberOfLecture,
+                                                    lecturesDone: 0,
+                                                    isComplete: false,
+                                                },
+                                            ],
+                                        },
+                                    };
+                                }
+                                return prev;
+                            });
                         });
                     },
                 );
@@ -409,6 +420,17 @@ export default function TargetAssignment() {
         columnIndex: number,
         chapterId: number,
     ) => {
+        const prevChapterId =
+            selectedChapters[targetType][subject][columnIndex];
+        if (prevChapterId !== 0) {
+            const newCheckboxStates = { ...checkboxStates };
+            dates.forEach((date) => {
+                const key = `${date}-${targetType}-${subject}-${columnIndex}`;
+                delete newCheckboxStates[key];
+            });
+            setCheckboxStates(newCheckboxStates);
+        }
+
         setSelectedChapters((prev) => ({
             ...prev,
             [targetType]: {
@@ -725,9 +747,13 @@ export default function TargetAssignment() {
                                                 id={`target-${targetType}-${subject}-${date}-${index}`}
                                                 className="border-pcb/30 text-pcb"
                                                 checked={
+                                                    // Only show checked if the current column's chapter matches
                                                     checkboxStates[
                                                         `${date}-${targetType}-${subject}-${index}`
-                                                    ] || false
+                                                    ] &&
+                                                    selectedChapters[
+                                                        targetType
+                                                    ][subject][index] !== 0
                                                 }
                                                 onCheckedChange={(checked) =>
                                                     handleTargetChange(

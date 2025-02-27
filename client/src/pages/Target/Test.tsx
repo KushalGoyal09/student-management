@@ -266,7 +266,7 @@ export default function TargetAssignment() {
                                                     lecturesPerDay:
                                                         t.numberOfLecture,
                                                     lecturesDone: 0,
-                                                    isComplete: false,
+                                                    isComplete: t.isFinal,
                                                 },
                                             ],
                                         },
@@ -590,9 +590,9 @@ export default function TargetAssignment() {
                         <TabsContent key={subject} value={subject}>
                             {ongoingChapters[targetType][
                                 subject as Subject
-                            ].map((chapter) => (
+                            ].map((chapter,index) => (
                                 <div
-                                    key={chapter.chapterId}
+                                    key={index}
                                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 pb-4 border-b last:border-b-0"
                                 >
                                     <span className="font-medium mb-2 sm:mb-0">
@@ -606,13 +606,13 @@ export default function TargetAssignment() {
                                     <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:space-x-4">
                                         <div className="flex items-center space-x-2">
                                             <Label
-                                                htmlFor={`lectures-per-day-${targetType}-${subject}-${chapter.chapterId}`}
+                                                htmlFor={`lectures-per-day-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 className="text-xs sm:text-sm whitespace-nowrap"
                                             >
                                                 Lectures/day:
                                             </Label>
                                             <Input
-                                                id={`lectures-per-day-${targetType}-${subject}-${chapter.chapterId}`}
+                                                id={`lectures-per-day-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 type="number"
                                                 value={chapter.lecturesPerDay}
                                                 onChange={(e) =>
@@ -631,13 +631,13 @@ export default function TargetAssignment() {
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <Label
-                                                htmlFor={`lectures-done-${targetType}-${subject}-${chapter.chapterId}`}
+                                                htmlFor={`lectures-done-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 className="text-xs sm:text-sm whitespace-nowrap"
                                             >
                                                 Lectures done:
                                             </Label>
                                             <span
-                                                id={`lectures-done-${targetType}-${subject}-${chapter.chapterId}`}
+                                                id={`lectures-done-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 className="text-sm font-medium"
                                             >
                                                 {chapter.lecturesDone}
@@ -645,13 +645,13 @@ export default function TargetAssignment() {
                                         </div>
                                         <div className="flex items-center space-x-2 col-span-2 sm:col-span-1">
                                             <Label
-                                                htmlFor={`complete-${targetType}-${subject}-${chapter.chapterId}`}
+                                                htmlFor={`complete-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 className="text-xs sm:text-sm"
                                             >
                                                 Complete:
                                             </Label>
                                             <Switch
-                                                id={`complete-${targetType}-${subject}-${chapter.chapterId}`}
+                                                id={`complete-${targetType}-${subject}-${chapter.chapterId}-${index}`}
                                                 checked={chapter.isComplete}
                                                 onCheckedChange={(checked) =>
                                                     handleMarkComplete(

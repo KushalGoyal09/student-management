@@ -203,25 +203,25 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 target.physics
                     .map(
                         (chapter) =>
-                            syllabus.physics.find(
+                            `${syllabus.physics.find(
                                 (p) => p.id === chapter.chapterId,
-                            )?.chapterName,
+                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
                 target.chemistry
                     .map(
                         (chapter) =>
-                            syllabus.chemistry.find(
+                            `${syllabus.chemistry.find(
                                 (p) => p.id === chapter.chapterId,
-                            )?.chapterName,
+                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
                 target.biology
                     .map(
                         (chapter) =>
-                            syllabus.biology.find(
+                            `${syllabus.biology.find(
                                 (p) => p.id === chapter.chapterId,
-                            )?.chapterName,
+                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
             ]);
@@ -374,7 +374,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                                     {target.physics
                                         .map(
                                             (chapter) =>
-                                                `${syllabus.physics.find((p) => p.id === chapter.chapterId)?.chapterName}`,
+                                                `${syllabus.physics.find((p) => p.id === chapter.chapterId)?.chapterName} (${chapter.numberOfLecture} L/D)`,
                                         )
                                         .join(", ")}
                                 </td>
@@ -384,7 +384,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                                     {target.chemistry
                                         .map(
                                             (chapter) =>
-                                                `${syllabus.chemistry.find((p) => p.id === chapter.chapterId)?.chapterName}`,
+                                                `${syllabus.chemistry.find((p) => p.id === chapter.chapterId)?.chapterName} (${chapter.numberOfLecture} L/D)`,
                                         )
                                         .join(", ")}
                                 </td>
@@ -394,7 +394,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                                     {target.biology
                                         .map(
                                             (chapter) =>
-                                                `${syllabus.biology.find((p) => p.id === chapter.chapterId)?.chapterName}`,
+                                                `${syllabus.biology.find((p) => p.id === chapter.chapterId)?.chapterName} (${chapter.numberOfLecture} L/D)`,
                                         )
                                         .join(", ")}
                                 </td>

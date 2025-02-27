@@ -248,31 +248,22 @@ export default function TargetAssignment() {
 
                             // Update ongoing chapters
                             setOngoingChapters((prev) => {
-                                const subjectChapters =
-                                    prev[targetType][subject];
-                                if (
-                                    !subjectChapters.find(
-                                        (ch) => ch.chapterId === t.chapterId,
-                                    )
-                                ) {
-                                    return {
-                                        ...prev,
-                                        [targetType]: {
-                                            ...prev[targetType],
-                                            [subject]: [
-                                                ...subjectChapters,
-                                                {
-                                                    chapterId: t.chapterId,
-                                                    lecturesPerDay:
-                                                        t.numberOfLecture,
-                                                    lecturesDone: 0,
-                                                    isComplete: t.isFinal,
-                                                },
-                                            ],
-                                        },
-                                    };
-                                }
-                                return prev;
+                                return {
+                                    ...prev,
+                                    [targetType]: {
+                                        ...prev[targetType],
+                                        [subject]: [
+                                            ...prev[targetType][subject],
+                                            {
+                                                chapterId: t.chapterId,
+                                                lecturesPerDay:
+                                                    t.numberOfLecture,
+                                                lecturesDone: 0,
+                                                isComplete: t.isFinal,
+                                            },
+                                        ],
+                                    },
+                                };
                             });
                         });
                     },
@@ -590,7 +581,7 @@ export default function TargetAssignment() {
                         <TabsContent key={subject} value={subject}>
                             {ongoingChapters[targetType][
                                 subject as Subject
-                            ].map((chapter,index) => (
+                            ].map((chapter, index) => (
                                 <div
                                     key={index}
                                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 pb-4 border-b last:border-b-0"

@@ -203,25 +203,31 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 target.physics
                     .map(
                         (chapter) =>
-                            `${syllabus.physics.find(
-                                (p) => p.id === chapter.chapterId,
-                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
+                            `${
+                                syllabus.physics.find(
+                                    (p) => p.id === chapter.chapterId,
+                                )?.chapterName
+                            } (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
                 target.chemistry
                     .map(
                         (chapter) =>
-                            `${syllabus.chemistry.find(
-                                (p) => p.id === chapter.chapterId,
-                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
+                            `${
+                                syllabus.chemistry.find(
+                                    (p) => p.id === chapter.chapterId,
+                                )?.chapterName
+                            } (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
                 target.biology
                     .map(
                         (chapter) =>
-                            `${syllabus.biology.find(
-                                (p) => p.id === chapter.chapterId,
-                            )?.chapterName} (${chapter.numberOfLecture} L/D)`,
+                            `${
+                                syllabus.biology.find(
+                                    (p) => p.id === chapter.chapterId,
+                                )?.chapterName
+                            } (${chapter.numberOfLecture} L/D)`,
                     )
                     .join(", "),
             ]);
@@ -232,14 +238,30 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 startY: yPosition,
                 margin: { left: margin, right: margin },
                 columnStyles: {
-                    0: { cellWidth: 30, fillColor: [255, 255, 255] },
-                    1: { cellWidth: 45, fillColor: [230, 247, 255] },
-                    2: { cellWidth: 45, fillColor: [255, 243, 230] },
-                    3: { cellWidth: 45, fillColor: [230, 255, 230] },
+                    0: { cellWidth: 30 },
+                    1: { cellWidth: 45 },
+                    2: { cellWidth: 45 },
+                    3: { cellWidth: 45 },
                 },
                 styles: { cellPadding: 2, fontSize: 8 },
                 headStyles: { fillColor: [138, 12, 122], textColor: 255 },
-                alternateRowStyles: {},
+                didParseCell: function (data) {
+                    if (data.section === "body") {
+                        if (data.row.index % 2 === 0) {
+                            // Even rows
+                            if (data.column.index === 1) {
+                                data.cell.styles.fillColor = [230, 247, 255]; // Light blue
+                            } else if (data.column.index === 2) {
+                                data.cell.styles.fillColor = [255, 243, 230]; // Light orange
+                            } else if (data.column.index === 3) {
+                                data.cell.styles.fillColor = [230, 255, 230]; // Light green
+                            }
+                        } else {
+                            // Odd rows
+                            data.cell.styles.fillColor = [255, 255, 255]; // White
+                        }
+                    }
+                },
             });
 
             yPosition = (pdf as any).lastAutoTable.finalY + 10;

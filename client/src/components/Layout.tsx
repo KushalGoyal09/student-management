@@ -127,7 +127,7 @@ const Layout = () => {
         },
         {
             role: [Role.groupMentor, Role.seniorMentor],
-            label: "Target",
+            label: "Create Target",
             path: "/target",
         },
         {

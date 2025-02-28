@@ -36,6 +36,7 @@ const Ticket = lazy(() => import("./pages/Ticket/Ticket"));
 const Employee = lazy(() => import("./pages/Detail/Employee"));
 const PremadeTarget = lazy(() => import("./pages/PremadeTarget/PremadeTarget"));
 import { RecoilRoot } from "recoil";
+import TargetPage from "./pages/TargetPage";
 
 const App = () => {
     const router = createBrowserRouter([
@@ -119,6 +120,10 @@ const App = () => {
                 {
                     path: "/AdminPanel",
                     element: <AdminPanel />,
+                },
+                {
+                    path: "/manage-target",
+                    element: <TargetPage />,
                 },
                 {
                     path: "/profile",

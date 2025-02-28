@@ -8,6 +8,7 @@ import {
     FileText,
     HandCoins,
     UserRoundPen,
+    Target,
 } from "lucide-react";
 
 export default function AdminPanel() {
@@ -61,6 +62,11 @@ export default function AdminPanel() {
                             title: "MANAGE ROLES",
                             icon: <UserRoundPen className="h-8 w-8" />,
                             path: "/role",
+                        },
+                        {
+                            title: "TARGET",
+                            icon: <Target className="h-8 w-8" />,
+                            path: "/manage-target",
                         },
                     ].map((item, index) => (
                         <button

@@ -32,7 +32,7 @@ const studentProfile = async (req: AuthRequest, res: Response) => {
     }
 
     const { studentId } = parsedData.data;
-    const student = await db.student.findUnique({
+    let student : any = await db.student.findUnique({
         where: {
             id: studentId,
         },
@@ -68,12 +68,14 @@ const studentProfile = async (req: AuthRequest, res: Response) => {
             reasonOfDeactive: true,
             groupMentor: {
                 select: {
+                    id: true,
                     name: true,
                     username: true,
                 },
             },
         },
     });
+    
     if (!student) {
         res.status(404).json({
             success: false,
@@ -81,6 +83,21 @@ const studentProfile = async (req: AuthRequest, res: Response) => {
         });
         return;
     }
+    const sm = await db.groupMentor.findUnique({
+        where: {
+            id: student.groupMentor?.id
+        },
+        select: {
+            seniorMentor: {
+                select: {
+                    name: true,
+                    username: true,
+                    id: true,
+                }
+            }
+        }
+    })
+    student.seniorMentor = sm?.seniorMentor;
     res.json({
         success: true,
         student,

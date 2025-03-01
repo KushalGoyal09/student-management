@@ -45,10 +45,7 @@ const fetchSeniorMentors = async (): Promise<SeniorMentor[]> => {
 
 const getStudentMentor = async (
     studentId: string,
-): Promise<{
-    username: string;
-    name: string;
-} | null> => {
+) => {
     const { data } = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/profile/student",
         { studentId },
@@ -58,7 +55,10 @@ const getStudentMentor = async (
             },
         },
     );
-    return data.student.groupMentor;
+    return {
+        groupMentor: data.student.groupMentor,
+        seniorMentor: data.student.seniorMentor,
+    };
 };
 
 const fetchMentors = async (seniorMentorId: string): Promise<GroupMentor[]> => {
@@ -86,14 +86,21 @@ export default function AssignMentor({ studentId, currentMentor }: Props) {
         username: string;
         name: string;
     } | null>(null);
+    const [seniorMentor, setSeniorMentor] = useState<{
+        username: string;
+        name: string;
+    } | null>(null);
     const [groupLink, setGroupLink] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
 
     useEffect(() => {
         getStudentMentor(studentId).then((data) => {
-            if (data) {
-                setAssaignedMentor(data);
+            if (data && data.groupMentor) {
+                setAssaignedMentor(data.groupMentor);
+            }
+            if (data && data.seniorMentor) {
+                setSeniorMentor(data.seniorMentor);
             }
         });
     }, []);
@@ -187,6 +194,17 @@ export default function AssignMentor({ studentId, currentMentor }: Props) {
                         <p className="text-sm text-yellow-700">
                             Current mentor: {assaignedMentor.name} (
                             {assaignedMentor.username})
+                        </p>
+                    </div>
+                </div>
+            )}
+            {seniorMentor && (
+                <div>
+                    <div className="mb-4 p-4 bg-yellow-100 rounded-md flex items-center">
+                        <AlertCircle className="h-5 w-5 text-yellow-500 mr-2" />
+                        <p className="text-sm text-yellow-700">
+                            Senior Mentor: {seniorMentor.name} (
+                            {seniorMentor.username})
                         </p>
                     </div>
                 </div>

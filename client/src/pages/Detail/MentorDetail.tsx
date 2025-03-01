@@ -268,6 +268,7 @@ export default function Component() {
                                             href={formatWhatsAppLink(
                                                 student.whattsapNumber,
                                             )}
+                                            target="_blank"
                                             className="flex items-center text-green-600"
                                         >
                                             <MessageCircle className="w-4 h-4 mr-1" />
@@ -278,6 +279,7 @@ export default function Component() {
                                         <a
                                             href={student.whattsapGroupLink}
                                             className="flex items-center text-green-600"
+                                            target="_blank"
                                         >
                                             <MessageCircle className="w-4 h-4 mr-1" />
                                             WhatsApp Group

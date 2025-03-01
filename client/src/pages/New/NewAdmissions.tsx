@@ -1,7 +1,5 @@
-"use client";
-
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRecoilValue } from "recoil";
 import newStudents from "@/recoil/newStudents";
@@ -49,24 +47,52 @@ interface FilterOptions {
 export default function NewAdmissions() {
     const students: Student[] = useRecoilValue(newStudents);
     const router = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [searchTerm, setSearchTerm] = useState("");
+    // Initialize state from URL params
+    const [searchTerm, setSearchTerm] = useState(
+        searchParams.get("search") || "",
+    );
     const [filters, setFilters] = useState({
-        dropperStatus: "",
-        platform: "",
-        status: "",
-        class: "",
-        studyHoursRange: [0, 24],
-        target: "",
+        dropperStatus: searchParams.get("dropperStatus") || "",
+        platform: searchParams.get("platform") || "",
+        status: searchParams.get("status") || "",
+        class: searchParams.get("class") || "",
+        studyHoursRange: [
+            Number(searchParams.get("studyHoursMin") || 0),
+            Number(searchParams.get("studyHoursMax") || 24),
+        ],
+        target: searchParams.get("target") || "",
     });
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [sortOrder, setSortOrder] = useState("desc");
+    const [sortBy, setSortBy] = useState(
+        searchParams.get("sortBy") || "createdAt",
+    );
+    const [sortOrder, setSortOrder] = useState(
+        searchParams.get("sortOrder") || "desc",
+    );
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
         dropperStatus: [],
         platform: [],
         class: [],
         target: [],
     });
+
+    // Update URL when filters change
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (searchTerm) params.set("search", searchTerm);
+        if (filters.dropperStatus)
+            params.set("dropperStatus", filters.dropperStatus);
+        if (filters.platform) params.set("platform", filters.platform);
+        if (filters.status) params.set("status", filters.status);
+        if (filters.class) params.set("class", filters.class);
+        if (filters.target) params.set("target", filters.target);
+        params.set("studyHoursMin", filters.studyHoursRange[0].toString());
+        params.set("studyHoursMax", filters.studyHoursRange[1].toString());
+        params.set("sortBy", sortBy);
+        params.set("sortOrder", sortOrder);
+        setSearchParams(params);
+    }, [searchTerm, filters, sortBy, sortOrder, setSearchParams]);
 
     useEffect(() => {
         const options: FilterOptions = {
@@ -131,6 +157,10 @@ export default function NewAdmissions() {
             studyHoursRange: [0, 24],
             target: "",
         });
+        setSearchTerm("");
+        setSortBy("createdAt");
+        setSortOrder("desc");
+        setSearchParams({}); // Clear URL params
     };
 
     return (
@@ -157,7 +187,7 @@ export default function NewAdmissions() {
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-80">
-                        <div className="grid gap-4">
+                        <div className="grid gap-4 relative">
                             <div className="space-y-2">
                                 <h4 className="font-medium leading-none">
                                     Filters
@@ -183,7 +213,7 @@ export default function NewAdmissions() {
                                     <SelectTrigger id="dropperStatus">
                                         <SelectValue placeholder="Select Dropper Status" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="z-[60]">
                                         <SelectItem value="all">All</SelectItem>
                                         {filterOptions.dropperStatus.map(
                                             (status) => (
@@ -212,7 +242,7 @@ export default function NewAdmissions() {
                                     <SelectTrigger id="platform">
                                         <SelectValue placeholder="Select Platform" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="z-[60]">
                                         <SelectItem value="all">All</SelectItem>
                                         {filterOptions.platform.map(
                                             (platform) => (
@@ -241,7 +271,7 @@ export default function NewAdmissions() {
                                     <SelectTrigger id="status">
                                         <SelectValue placeholder="Select Status" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="z-[60]">
                                         <SelectItem value="all">All</SelectItem>
                                         <SelectItem value="active">
                                             Active
@@ -263,7 +293,7 @@ export default function NewAdmissions() {
                                     <SelectTrigger id="class">
                                         <SelectValue placeholder="Select Class" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="z-[60]">
                                         <SelectItem value="all">All</SelectItem>
                                         {filterOptions.class.map(
                                             (classOption) => (
@@ -292,7 +322,7 @@ export default function NewAdmissions() {
                                     <SelectTrigger id="target">
                                         <SelectValue placeholder="Select Target" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="z-[60]">
                                         <SelectItem value="all">All</SelectItem>
                                         {filterOptions.target.map((target) => (
                                             <SelectItem
@@ -360,11 +390,13 @@ export default function NewAdmissions() {
             <ScrollArea className="h-[calc(100vh-240px)]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredAndSortedStudents.map((student) => (
-                        <StudentCard
-                            key={student.id}
-                            student={student}
-                            onClick={() => router(`/profile/${student.id}`)}
-                        />
+                        <Link to={`/profile/${student.id}`}>
+                            <StudentCard
+                                key={student.id}
+                                student={student}
+                                onClick={() => router(`/profile/${student.id}`)}
+                            />
+                        </Link>
                     ))}
                 </div>
             </ScrollArea>

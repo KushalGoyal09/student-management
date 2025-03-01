@@ -83,21 +83,23 @@ const studentProfile = async (req: AuthRequest, res: Response) => {
         });
         return;
     }
-    const sm = await db.groupMentor.findUnique({
-        where: {
-            id: student.groupMentor?.id
-        },
-        select: {
-            seniorMentor: {
-                select: {
-                    name: true,
-                    username: true,
-                    id: true,
+    if (student.groupMentor) {
+        const sm = await db.groupMentor.findUnique({
+            where: {
+                id: student.groupMentor?.id
+            },
+            select: {
+                seniorMentor: {
+                    select: {
+                        name: true,
+                        username: true,
+                        id: true,
+                    }
                 }
             }
-        }
-    })
-    student.seniorMentor = sm?.seniorMentor;
+        })
+        student.seniorMentor = sm?.seniorMentor;
+    }
     res.json({
         success: true,
         student,

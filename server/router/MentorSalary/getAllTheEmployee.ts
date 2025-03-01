@@ -31,6 +31,9 @@ const getAllEmployes = async (
             name: true,
             phoneNumber: true,
         },
+        orderBy: {
+            name: "asc",
+        },
     });
     res.json({
         success: true,

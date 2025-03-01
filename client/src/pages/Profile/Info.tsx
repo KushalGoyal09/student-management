@@ -412,9 +412,13 @@ export default function EnhancedStudentProfile({ id }: { id: string }) {
                                     label="WhatsApp"
                                     value={student.whattsapNumber}
                                     onClick={() => {
-                                        window.open(
-                                            `https://wa.me/${student.whattsapNumber}`,
-                                        );
+                                        const number =
+                                            student.whattsapNumber.startsWith(
+                                                "+",
+                                            )
+                                                ? student.whattsapNumber
+                                                : `+91${student.whattsapNumber}`;
+                                        window.open(`https://wa.me/${number}`);
                                     }}
                                 />
                                 <InfoCard

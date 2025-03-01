@@ -42,6 +42,9 @@ const getAllTheSeniors = async (
                 },
             },
         },
+        orderBy: {
+            name: "asc",
+        }
     });
     const data = await Promise.all(
         mentors.map(async (mentor) => {

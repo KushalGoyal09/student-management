@@ -27,7 +27,9 @@ const Juniors = lazy(() => import("./pages/Juniors"));
 const StudentProfile = lazy(() => import("./pages/Profile/StudentProfile"));
 const CallRecord = lazy(() => import("./pages/Call/CallRecordMentor"));
 const SeniorCall = lazy(() => import("./pages/Call/CallRecordSenior"));
-const MentorSalaryManagement = lazy(() => import("./pages/MentorSalary"));
+const MentorSalaryManagement = lazy(
+    () => import("./pages/salary/MentorSalary"),
+);
 const RoleManagement = lazy(() => import("./pages/RoleManagement"));
 const SyllabusComponent = lazy(() => import("./pages/Syallabus/NeetSyallabus"));
 const Syallabus = lazy(() => import("./pages/Syallabus/Syallabus"));

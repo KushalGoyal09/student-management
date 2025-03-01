@@ -38,6 +38,9 @@ const getAllTheMentors = async (
                 },
             },
         },
+        orderBy: {
+            name: "asc",
+        },
     });
     const rating = await Promise.all(
         mentors.map(async (mentor) => {

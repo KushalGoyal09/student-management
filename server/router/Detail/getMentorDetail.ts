@@ -49,6 +49,7 @@ const getMentorDetail = async (req: AuthRequest, res: Response) => {
                     platform: true,
                     id: true,
                     callNumber: true,
+                    createdAt: true,
                 },
             },
         },

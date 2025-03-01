@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { Star, Phone, MessageCircle } from "lucide-react";
 import { format, startOfWeek, addDays } from "date-fns";
@@ -14,6 +14,7 @@ interface Student {
     callNumber: string;
     class: string;
     platform: string;
+    createdAt: Date;
 }
 
 type CallStatus = "Scheduled" | "Done" | "DNP" | "Nothing";
@@ -68,6 +69,14 @@ const daysOfWeek = [
     "Sunday",
 ];
 
+const formatWhatsAppLink = (number: string) => {
+    if (!number) return "";
+    const cleanNumber = number.replace(/[^0-9]/g, "");
+    return cleanNumber.startsWith("+91")
+        ? `https://wa.me/${cleanNumber}`
+        : `https://wa.me/+91${cleanNumber}`;
+};
+
 export default function Component() {
     let { username } = useParams();
     const [data, setData] = useState<MentorData>();
@@ -75,6 +84,9 @@ export default function Component() {
         new Map<string, CallStatus>(),
     );
     const router = useNavigate();
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
     useEffect(() => {
         if (!username) return;
         fetchMentorDetails(username).then((data) => {
@@ -123,6 +135,19 @@ export default function Component() {
         const date = format(addDays(weekStart, dayIndex), "yyyy-MM-dd");
         return date;
     };
+
+    const filteredAndSortedStudents = useMemo(() => {
+        return (
+            data?.Student?.filter((student) =>
+                student.name.toLowerCase().includes(searchQuery.toLowerCase()),
+            ).sort((a, b) => {
+
+                const dateA = new Date(a.createdAt).getTime();
+                const dateB = new Date(b.createdAt).getTime();
+                return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+            }) || []
+        );
+    }, [data?.Student, searchQuery, sortOrder]);
 
     if (!data) {
         return (
@@ -188,9 +213,32 @@ export default function Component() {
                             <span className="text-gray-600 ml-1">Students</span>
                         </div>
                     </div>
-                    <h2 className="text-2xl font-semibold mb-4">Students</h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-semibold">
+                            Students ({data.Student?.length || 0})
+                        </h2>
+                        <div className="flex gap-4">
+                            <input
+                                type="text"
+                                placeholder="Search students..."
+                                className="px-3 py-1 border rounded"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <button
+                                onClick={() =>
+                                    setSortOrder((prev) =>
+                                        prev === "asc" ? "desc" : "asc",
+                                    )
+                                }
+                                className="px-3 py-1 border rounded"
+                            >
+                                Sort {sortOrder === "desc" ? "↓" : "↑"}
+                            </button>
+                        </div>
+                    </div>
                     <div className="grid gap-4 mb-8">
-                        {data.Student.map((student) => (
+                        {filteredAndSortedStudents.map((student) => (
                             <div
                                 key={student.id}
                                 className="bg-gray-50 p-4 rounded-lg"
@@ -217,7 +265,9 @@ export default function Component() {
                                     </a>
                                     {!student.whattsapGroupLink && (
                                         <a
-                                            href={`https://wa.me/${student.whattsapNumber}`}
+                                            href={formatWhatsAppLink(
+                                                student.whattsapNumber,
+                                            )}
                                             className="flex items-center text-green-600"
                                         >
                                             <MessageCircle className="w-4 h-4 mr-1" />

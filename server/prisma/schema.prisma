@@ -59,7 +59,7 @@ model Student {
   gender          String
   fatherName      String
   motherName      String
-  whattsapNumber  String   @unique
+  whattsapNumber  String
   callNumber      String
   motherNumber    String
   fatherNumber    String

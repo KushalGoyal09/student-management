@@ -13,7 +13,6 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Search, SlidersHorizontal } from "lucide-react";
 import {
@@ -49,7 +48,6 @@ export default function NewAdmissions() {
     const router = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    // Initialize state from URL params
     const [searchTerm, setSearchTerm] = useState(
         searchParams.get("search") || "",
     );
@@ -58,10 +56,6 @@ export default function NewAdmissions() {
         platform: searchParams.get("platform") || "",
         status: searchParams.get("status") || "",
         class: searchParams.get("class") || "",
-        studyHoursRange: [
-            Number(searchParams.get("studyHoursMin") || 0),
-            Number(searchParams.get("studyHoursMax") || 24),
-        ],
         target: searchParams.get("target") || "",
     });
     const [sortBy, setSortBy] = useState(
@@ -77,7 +71,6 @@ export default function NewAdmissions() {
         target: [],
     });
 
-    // Update URL when filters change
     useEffect(() => {
         const params = new URLSearchParams();
         if (searchTerm) params.set("search", searchTerm);
@@ -87,8 +80,6 @@ export default function NewAdmissions() {
         if (filters.status) params.set("status", filters.status);
         if (filters.class) params.set("class", filters.class);
         if (filters.target) params.set("target", filters.target);
-        params.set("studyHoursMin", filters.studyHoursRange[0].toString());
-        params.set("studyHoursMax", filters.studyHoursRange[1].toString());
         params.set("sortBy", sortBy);
         params.set("sortOrder", sortOrder);
         setSearchParams(params);
@@ -124,11 +115,7 @@ export default function NewAdmissions() {
                     (!filters.status ||
                         student.status === (filters.status === "active")) &&
                     (!filters.class || student.class === filters.class) &&
-                    (!filters.target || student.target === filters.target) &&
-                    Number.parseInt(student.StudyHours) >=
-                        filters.studyHoursRange[0] &&
-                    Number.parseInt(student.StudyHours) <=
-                        filters.studyHoursRange[1];
+                    (!filters.target || student.target === filters.target);
 
                 return searchMatch && filterMatch;
             })
@@ -154,7 +141,6 @@ export default function NewAdmissions() {
             platform: "",
             status: "",
             class: "",
-            studyHoursRange: [0, 24],
             target: "",
         });
         setSearchTerm("");
@@ -334,29 +320,6 @@ export default function NewAdmissions() {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                            </div>
-                            <div className="grid gap-2">
-                                <Label>Study Hours Range</Label>
-                                <Slider
-                                    min={0}
-                                    max={24}
-                                    step={1}
-                                    value={filters.studyHoursRange}
-                                    onValueChange={(value) =>
-                                        setFilters({
-                                            ...filters,
-                                            studyHoursRange: value,
-                                        })
-                                    }
-                                />
-                                <div className="flex justify-between text-xs text-muted-foreground">
-                                    <span>
-                                        {filters.studyHoursRange[0]} hours
-                                    </span>
-                                    <span>
-                                        {filters.studyHoursRange[1]} hours
-                                    </span>
-                                </div>
                             </div>
                             <Button onClick={resetFilters} variant="outline">
                                 Reset Filters

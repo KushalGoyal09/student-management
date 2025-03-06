@@ -32,16 +32,28 @@ const studentRating = async (req: Request, res: Response) => {
             exceptation,
             phoneNumber,
         } = parsedData.data;
-        const student = await db.student.findUnique({
+        const student = await db.student.findMany({
             where: {
                 whattsapNumber: phoneNumber,
             },
             select: {
                 id: true,
                 groupMentorId: true,
+                createdAt: true,
+            },
+            orderBy: {
+                createdAt: "desc",
             },
         });
-        if (!student || !student.groupMentorId) {
+        if (!student.length || !student[0].groupMentorId) {
+            res.status(404).json({
+                success: false,
+                message: "Student is not found",
+            });
+            return;
+        }
+        const selectedStudent = student[0];
+        if (!selectedStudent.groupMentorId) {
             res.status(404).json({
                 success: false,
                 message: "Student is not found",
@@ -51,8 +63,8 @@ const studentRating = async (req: Request, res: Response) => {
         await db.ratingByStudent.upsert({
             where: {
                 studentId_groupMentorId: {
-                    studentId: student.id,
-                    groupMentorId: student.groupMentorId,
+                    studentId: selectedStudent.id,
+                    groupMentorId: selectedStudent.groupMentorId,
                 },
             },
             create: {
@@ -61,8 +73,8 @@ const studentRating = async (req: Request, res: Response) => {
                 calling,
                 seriousness,
                 exceptation,
-                studentId: student.id,
-                groupMentorId: student.groupMentorId,
+                studentId: selectedStudent.id,
+                groupMentorId: selectedStudent.groupMentorId,
             },
             update: {
                 bonding,
